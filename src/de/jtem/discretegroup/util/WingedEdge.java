@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 
+import charlesgunn.math.p5.PlueckerLineGeometry;
 import de.jreality.geometry.GeometryUtility;
 import de.jreality.geometry.IndexedFaceSetUtility;
 import de.jreality.math.MatrixBuilder;
@@ -16,7 +17,6 @@ import de.jreality.scene.data.Attribute;
 import de.jreality.scene.data.DataList;
 import de.jreality.scene.data.StorageModel;
 import de.jreality.util.LoggingSystem;
-import de.jtem.projgeom.PlueckerLineGeometry;
 
 /*
  * Created on Mar 16, 2004

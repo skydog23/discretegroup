@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 
+import charlesgunn.math.p5.PlueckerLineGeometry;
 import de.jreality.geometry.IndexedFaceSetFactory;
 import de.jreality.geometry.QuadMeshFactory;
 import de.jreality.math.P3;
@@ -23,7 +24,6 @@ import de.jreality.util.LoggingSystem;
 import de.jreality.util.SceneGraphUtility;
 import de.jtem.discretegroup.util.WingedEdge.Edge;
 import de.jtem.discretegroup.util.WingedEdge.Face;
-import de.jtem.projgeom.PlueckerLineGeometry;
 
 public class WingedEdgeUtility {
 
