@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Tessellated Content</title>
+</head>
+
+<body>
+<h2 align="center">Tessellated Content</h2>
+<p>This plugin wraps a given jReality content node within a scene graph representing a discrete group, thus tessellating the content according to the group. For a description of the underlying mathematics principles, see <a href="http://www.math.tu-berlin.de/~gunn/Documents/Papers/3space.pdf">this article</a>.</p>
+<h3>Directions for use</h3>
+<ul>
+  <li>Fly using the arrow keys, shift modifiers provide various sorts of rolling and panning. Flying speed is controlled by the slider &quot;Fly speed&quot;.</li>
+  <li>If the checkbox labeled &quot;Follow Camera&quot; is checked, then the flight is constrained to remain within a single fundamental domain of the tessellation, so that one cannot fly out of the tessellation. </li>
+  <li>If the checkbox labeled &quot;Clip To Camera&quot; is checked, then the program attempts to draw only those copies which intersect the viewing frustum of the camera. </li>
+  <li>The slider labeled &quot;Scale&quot; controls the scaling of the displayed content.</li>
+  <li>There is by default a rotate (left mouse) and drag (shift left mouse) attached to the content node. Dragging when not over the content rotates the world around its coordinate origin.</li>
+</ul>
+<h3>Controlling the group enumeration</h3>
+<p>There are two panels which control the enumeration of the group, the master constraint and the viewport constraint. Each represents a constraint object which controls which group elements should be accepted. Conceptually, the master constraint is always applied to produce a list of group elements for display. Then, if the clip-to-camera checkbox is active, this list will then be further filtered by applying the viewport constraint.</p>
+<h4>The master constraint</h4>
+<p>The master constraint has the following parameters:</p>
+<ul>
+  <li>The maximum word length: how many generators may be multiplied together,</li>
+  <li>The radius: the maximum distance which the origin of the coordinate system may be moved by the group element, and</li>
+  <li>The maximum number of group elements which are to be generated.</li>
+</ul>
+<h4>The viewport constraint</h4>
+<p>The viewport constraint also has three parameters. They are:</p>
+<ul>
+  <li>The minimum distance (elements which move the origin less than this are always accepted),</li>
+  <li>The radius (as above), and</li>
+  <li>A translation factor, which controls the actual frusturm which is tested against (obtained by translating the actual frustum back in the z-direction by this amount).</li>
+</ul>
+<h4>History</h4>
+<p>This software is a reincarnation of  the original maniview program developed at  the Geometry Center, UMn, in 1988-92.   Author: Charles Gunn </p>
+</body>
+</html>

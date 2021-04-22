@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="de/jtem/discretegroup/core/DiscreteGroupElementBeanInfo.java|de/jtem/discretegroup/core/DiscreteGroupElementCustomizer.java" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/anim.jar"/>
+	<classpathentry kind="lib" path="lib/projgeom.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jreality"/>
+	<classpathentry kind="lib" path="/jreality/lib/beans.jar"/>
+	<classpathentry kind="lib" path="/jreality/lib/jogamp/jogl-all.jar"/>
+	<classpathentry kind="lib" path="/jreality/lib/jrworkspace.jar" sourcepath="/jrworkspace"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
