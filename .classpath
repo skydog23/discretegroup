@@ -4,9 +4,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/anim.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jreality"/>
-	<classpathentry kind="lib" path="/jreality/lib/beans.jar"/>
-	<classpathentry kind="lib" path="/jreality/lib/jogamp/jogl-all.jar"/>
-	<classpathentry kind="lib" path="/jreality/lib/jrworkspace.jar" sourcepath="/jrworkspace"/>
 	<classpathentry kind="lib" path="/lib/charlesgunn.jar"/>
+	<classpathentry kind="lib" path="/jreality/lib/jogamp/jogl-all.jar"/>
+	<classpathentry kind="lib" path="/lib/jrworkspace.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

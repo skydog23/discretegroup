@@ -44,6 +44,7 @@ import de.jreality.math.Pn;
 import de.jreality.math.Rn;
 import de.jreality.plugin.JRViewer;
 import de.jreality.scene.SceneGraphComponent;
+import de.jreality.util.CameraUtility;
 import de.jtem.discretegroup.core.DirichletDomain;
 import de.jtem.discretegroup.core.DiscreteGroup;
 import de.jtem.discretegroup.core.DiscreteGroupElement;
@@ -56,6 +57,7 @@ public class SimpleExample2D  {
 
 	DiscreteGroup dg;
 	DiscreteGroupSceneGraphRepresentation dgsgr;
+	boolean skewit = true;
 	public void doIt()	{
 		// construct a 3d discrete group
 		dg = new DiscreteGroup();
@@ -76,18 +78,20 @@ public class SimpleExample2D  {
 		// set up a constraint that generates only 50 group elements
 		dg.setConstraint(new DiscreteGroupSimpleConstraint(50));
 		dg.update();
-		dg = WallpaperGroup.instanceOfGroup("O");
-		dg.setConstraint(new DiscreteGroupSimpleConstraint(50));
-		gens = dg.getGenerators();
-		Matrix cob = new Matrix();
-		cob.setColumn(0, new double[]{1,0,0,0});
-		cob.setColumn(1, new double[]{.5, Math.sqrt(3)/2.0,0,0});
-		for (int i = 0; i<gens.length; ++i)	{
-			double[] g = gens[i].getArray();
-			g = Rn.conjugateByMatrix(null, g, cob.getArray());
-			gens[i].setArray(g);
+		if (skewit) {
+			dg = WallpaperGroup.instanceOfGroup("O");
+			dg.setConstraint(new DiscreteGroupSimpleConstraint(50));
+			gens = dg.getGenerators();
+			Matrix cob = new Matrix();
+			cob.setColumn(0, new double[]{1,0,0,0});
+			cob.setColumn(1, new double[]{.5, Math.sqrt(3)/2.0,0,0});
+			for (int i = 0; i<gens.length; ++i)	{
+				double[] g = gens[i].getArray();
+				g = Rn.conjugateByMatrix(null, g, cob.getArray());
+				gens[i].setArray(g);
+			}
+			dg.update();
 		}
-		dg.update();
 		// create a scene graph representation of the group
 		dgsgr = new DiscreteGroupSceneGraphRepresentation(dg);
 		// construct a scene graph component to represent one fundamental domain
@@ -108,7 +112,8 @@ public class SimpleExample2D  {
 	public static void main(String[] args) {
 		SimpleExample2D se2d = new SimpleExample2D();
 		se2d.doIt();
-		JRViewer.display(se2d.dgsgr.getRepresentationRoot());	
+		JRViewer.display(se2d.dgsgr.getRepresentationRoot());
+		
 	}
 
 }

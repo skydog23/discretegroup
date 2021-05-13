@@ -43,6 +43,7 @@ import java.awt.Color;
 import de.jreality.plugin.JRViewer;
 import de.jreality.scene.Appearance;
 import de.jreality.shader.CommonAttributes;
+import de.jreality.util.CameraUtility;
 import de.jtem.discretegroup.core.DiscreteGroupColorPicker;
 
 public class ColorPickerExample extends SimpleExample2D {
@@ -65,8 +66,11 @@ public class ColorPickerExample extends SimpleExample2D {
 
 	public static void main(String[] args) {
 		ColorPickerExample se2d = new ColorPickerExample();
+		se2d.skewit = false;
 		se2d.doIt();
 		JRViewer.display(se2d.dgsgr.getRepresentationRoot());
+		CameraUtility.encompass(JRViewer.getLastJRViewer().getViewer());
+
 	}
 
 }

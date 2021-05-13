@@ -92,6 +92,7 @@ public abstract class DiscreteGroupColorPicker {
 		for (int i = 0; i<n; ++i)	{
 			DiscreteGroupElement dge = elist[i];
 			dge.colorIndex = calculateColorIndexForElement(dge);
+			System.err.println("assigning "+dge.colorIndex);
 		}
 	}
 
