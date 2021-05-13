@@ -141,7 +141,6 @@ public class DiscreteGroupSceneGraphRepresentation {
 			DiscreteGroupColorPicker cp = theGroup.getColorPicker();
 			if (cp != null && elementList[0] != null && cp != null)  {
 				theGroup.getColorPicker().assignColorIndices(elementList);
-				System.err.println("assigning color indices");
 			}
 //			Appearance[] aplist = DiscreteGroupColorPicker.appearanceList;
 			SceneGraphComponent theNewSGR = SceneGraphUtility.createFullSceneGraphComponent(name+" DG Parent");

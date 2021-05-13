@@ -38,13 +38,19 @@
 
 package de.jtem.discretegroup.tutorial;
 
+import java.awt.Color;
+
 import de.jreality.math.MatrixBuilder;
 import de.jreality.math.Pn;
 import de.jreality.plugin.JRViewer;
+import de.jreality.scene.Appearance;
 import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Transformation;
+import de.jreality.scene.Viewer;
+import de.jreality.shader.CommonAttributes;
 import de.jreality.tools.RotateTool;
+import de.jreality.util.CameraUtility;
 import de.jtem.discretegroup.core.DirichletDomain;
 import de.jtem.discretegroup.core.DiscreteGroup;
 import de.jtem.discretegroup.core.DiscreteGroupElement;
@@ -82,6 +88,10 @@ public class ConstraintExample  {
 		dgsgr = new DiscreteGroupSceneGraphRepresentation(dg);
 		// construct a scene graph component to represent one fundamental domain
 		SceneGraphComponent fundDomSGC = new SceneGraphComponent("fundDomSGC");
+		Appearance red = new Appearance();
+		fundDomSGC.setAppearance(red);
+		red.setAttribute(CommonAttributes.POLYGON_SHADER+"."+CommonAttributes.DIFFUSE_COLOR, Color.red);
+		red.setAttribute(CommonAttributes.LINE_SHADER+"."+CommonAttributes.DIFFUSE_COLOR, Color.yellow);
 		fundDomSGC.setTransformation(new Transformation());
 		DirichletDomain dirdom = new DirichletDomain(dg);
 		dirdom.update();
@@ -98,8 +108,8 @@ public class ConstraintExample  {
 	public static void main(String[] args) {
 		ConstraintExample cex = new ConstraintExample();
 		cex.doIt();
-		JRViewer.display(cex.dgsgr.getRepresentationRoot());
-		
+		Viewer v  = JRViewer.display(cex.dgsgr.getRepresentationRoot());
+		CameraUtility.encompass(v);
 	}
 
 }

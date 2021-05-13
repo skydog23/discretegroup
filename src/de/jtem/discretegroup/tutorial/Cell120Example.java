@@ -14,6 +14,7 @@ import de.jreality.scene.Viewer;
 import de.jreality.scene.data.Attribute;
 import de.jreality.scene.data.StorageModel;
 import de.jreality.shader.CommonAttributes;
+import de.jreality.util.CameraUtility;
 import de.jreality.util.Color;
 import de.jreality.util.SceneGraphUtility;
 import de.jtem.discretegroup.core.DirichletDomain;
@@ -51,9 +52,9 @@ public class Cell120Example {
 		willie.getAppearance().setAttribute("useGLSL", true);
 		willie.getAppearance().setAttribute(CommonAttributes.EDGE_DRAW, false);
 		willie.getAppearance().setAttribute(CommonAttributes.VERTEX_DRAW, false);
-//		willie.getAppearance().setAttribute(CommonAttributes.OFFSET, new double[]{0,0,0});
+//		willie.getAppearance().setAttribute(CommonAttributes.OFFSET, new double[]{0,.3,0});
 //		willie.getAppearance().setAttribute(CommonAttributes.ALIGNMENT, SwingConstants.CENTER);
-		willie.getAppearance().setAttribute(CommonAttributes.TEXT_SCALE, .003);
+		willie.getAppearance().setAttribute(CommonAttributes.TEXT_SCALE, .01);
 		
 		DiscreteGroupSceneGraphRepresentation dgsgr = new DiscreteGroupSceneGraphRepresentation(my120cell);
 		dgsgr.setWorldNode(willie);
@@ -93,6 +94,7 @@ public class Cell120Example {
 	public static void main(String[] argv)	{
 		Cell120Example harry = new Cell120Example();
 		Viewer v = JRViewer.display(harry.get120Cell());
+		CameraUtility.encompass(v);
 	}
 	
 	private double[] getFaceCenter(int k, int[][] indices, double[][] verts)	{

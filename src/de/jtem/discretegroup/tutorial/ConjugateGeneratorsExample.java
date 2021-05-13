@@ -44,6 +44,8 @@ import de.jreality.math.Matrix;
 import de.jreality.math.Rn;
 import de.jreality.plugin.JRViewer;
 import de.jreality.scene.SceneGraphComponent;
+import de.jreality.scene.Viewer;
+import de.jreality.util.CameraUtility;
 import de.jtem.discretegroup.core.DirichletDomain;
 import de.jtem.discretegroup.core.DiscreteGroup;
 import de.jtem.discretegroup.core.DiscreteGroupElement;
@@ -96,7 +98,9 @@ public class ConjugateGeneratorsExample  {
 	public static void main(String[] args) {
 		ConjugateGeneratorsExample se2d = new ConjugateGeneratorsExample();
 		se2d.doIt();
-		JRViewer.display(se2d.dgsgr.getRepresentationRoot());	
+		Viewer v = JRViewer.display(se2d.dgsgr.getRepresentationRoot());	
+		CameraUtility.encompass(v);
+
 	}
 
 }

@@ -14,7 +14,9 @@ import de.jreality.math.Rn;
 import de.jreality.plugin.JRViewer;
 import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
+import de.jreality.scene.Viewer;
 import de.jreality.shader.CommonAttributes;
+import de.jreality.util.CameraUtility;
 import de.jreality.util.SceneGraphUtility;
 import de.jtem.discretegroup.core.DiscreteGroupSceneGraphRepresentation;
 import de.jtem.discretegroup.groups.TriangleGroup;
@@ -85,10 +87,10 @@ public class CubeRotations  {
 	public static void main(String[] args)	{
 		CubeRotations cr = new CubeRotations();
 		
-		JRViewer.display(cr.makeWorld());
-		JRViewer jrv = JRViewer.getLastJRViewer();
-		jrv.getViewer().getSceneRoot().getAppearance().setAttribute(CommonAttributes.BACKGROUND_COLOR, new Color(20,20,40));
-		
+		Viewer v = JRViewer.display(cr.makeWorld());
+		v.getSceneRoot().getAppearance().setAttribute(CommonAttributes.BACKGROUND_COLOR, new Color(20,20,40));
+		CameraUtility.encompass(v);
+	
 	}
 
 }

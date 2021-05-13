@@ -46,7 +46,10 @@ import de.jreality.plugin.basic.Scene;
 import de.jreality.scene.Appearance;
 import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
+import de.jreality.scene.Viewer;
 import de.jreality.shader.CommonAttributes;
+import de.jreality.tutorial.util.FlyTool;
+import de.jreality.util.CameraUtility;
 import de.jreality.util.SceneGraphUtility;
 import de.jreality.util.Secure;
 import de.jreality.util.SystemProperties;
@@ -93,10 +96,13 @@ public class CubeExample {
 		ap.setAttribute(CommonAttributes.EDGE_DRAW, false);
 		ap.setAttribute(CommonAttributes.VERTEX_DRAW, false);
 		ap.setAttribute(CommonAttributes.SMOOTH_SHADING, false);
-		JRViewer.display(root);
-		JRViewer jrv = JRViewer.getLastJRViewer();
-		Scene scene = jrv.getPlugin(Scene.class);
+		Viewer v = JRViewer.display(root);
+		Scene scene = JRViewer.getLastJRViewer().getPlugin(Scene.class);
 		MatrixBuilder.euclidean().translate(0,0,60).assignTo(scene.getAvatarComponent());
+		FlyTool flytool = new FlyTool();
+		flytool.setGain(1);
+		scene.getAvatarComponent().addTool(flytool);
+		CameraUtility.encompass(v);
 	}
 
 }

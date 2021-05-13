@@ -42,7 +42,9 @@ import de.jreality.math.MatrixBuilder;
 import de.jreality.math.Pn;
 import de.jreality.plugin.JRViewer;
 import de.jreality.scene.SceneGraphComponent;
+import de.jreality.scene.Viewer;
 import de.jreality.tools.RotateTool;
+import de.jreality.util.CameraUtility;
 import de.jtem.discretegroup.core.DirichletDomain;
 import de.jtem.discretegroup.core.DiscreteGroup;
 import de.jtem.discretegroup.core.DiscreteGroupElement;
@@ -100,8 +102,9 @@ public class SimpleExample3D01 {
 		// this will generate a jReality scene graph
 		dgsgr.update();
 
-		JRViewer.display(dgsgr.getRepresentationRoot());
-		
+		Viewer v = JRViewer.display(dgsgr.getRepresentationRoot());
+		CameraUtility.encompass(v);
+
 	}
 
 }
