@@ -38,6 +38,7 @@
 
 package de.jtem.discretegroup.tutorial;
 
+import charlesgunn.jreality.newtools.FlyTool;
 import de.jreality.geometry.GeometryMergeFactory;
 import de.jreality.geometry.Primitives;
 import de.jreality.math.MatrixBuilder;
@@ -48,7 +49,6 @@ import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
 import de.jreality.shader.CommonAttributes;
-import de.jreality.tutorial.util.FlyTool;
 import de.jreality.util.CameraUtility;
 import de.jreality.util.SceneGraphUtility;
 import de.jreality.util.Secure;

@@ -275,7 +275,7 @@ public class WingedEdgeUtility {
 			} else {
 				IndexedFaceSetFactory ifsf = new IndexedFaceSetFactory();
 				ifsf.setMetric(we.metric); // Pn.EUCLIDEAN); //
-				System.err.println("winged edge metric = "+we.metric);
+//				System.err.println("winged edge metric = "+we.metric);
 				ifsf.setGenerateEdgesFromFaces(true);
 				ifsf.setGenerateVertexNormals(false);
 				ifsf.setGenerateFaceNormals(true);

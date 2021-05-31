@@ -225,10 +225,10 @@ public class WingedEdge extends IndexedFaceSet {
 	
 		final int[][] indices = new int[numFaces][];
 		
-
+//		System.err.println("printing faces");
 		for (int i = 0; i<numFaces;  ++i)	{
 			indices[i] = new int[faceList.get(i).order];
-			//System.err.println("Order "+farray[i].order);
+//			System.err.println("Order "+faceList.get(i).order);
 		}
 		
 		for (int i = 0; i<numEdges;  ++i)	{
@@ -300,20 +300,20 @@ public class WingedEdge extends IndexedFaceSet {
 		// merge fR into fL
 		Edge nextEdge = e.e1R;
 		if (e.fL.someEdge == e) e.fL.someEdge = nextEdge;
-		System.err.println("Beginning edge "+e.tag+"::"+
-				e.v0.tag+":"+
-				e.v1.tag);
+//		System.err.println("Beginning edge "+e.tag+"::"+
+//				e.v0.tag+":"+
+//				e.v1.tag);
 		do {
-			System.err.println("Processing edge "+nextEdge.tag+"::"+
-					nextEdge.v0.tag+":"+
-					nextEdge.v1.tag);
+//			System.err.println("Processing edge "+nextEdge.tag+"::"+
+//					nextEdge.v0.tag+":"+
+//					nextEdge.v1.tag);
 			if (nextEdge.fR == e.fR) {
-				System.err.println("0");
+//				System.err.println("0");
 				nextEdge.fR = e.fL;
 				nextEdge = nextEdge.e1R;
 			}
 			else if (nextEdge.fL == e.fR) {
-				System.err.println("1");
+//				System.err.println("1");
 				nextEdge.fL = e.fL;
 				nextEdge = nextEdge.e0L;
 			}
@@ -892,7 +892,7 @@ public class WingedEdge extends IndexedFaceSet {
 		}
 		size /= verts.length;
 		size = scale/size;
-		System.err.println("we: size = "+size);
+//		System.err.println("we: size = "+size);
 		double[] mat = MatrixBuilder.euclidean().scale(size).getArray();
 		for ( int i = 0; i<vertexList.size(); ++i)	{
 			Vertex wv = vertexList.get(i);
