@@ -40,6 +40,7 @@ package de.jtem.discretegroup.plugin;
 
 import static de.jreality.shader.CommonAttributes.FOG_DENSITY;
 import static de.jreality.shader.CommonAttributes.FOG_ENABLED;
+import static de.jreality.shader.CommonAttributes.FOG_MODE;
 import static java.awt.GridBagConstraints.BOTH;
 import static java.awt.GridBagConstraints.REMAINDER;
 import static java.awt.GridBagConstraints.WEST;
@@ -56,6 +57,7 @@ import javax.swing.SwingConstants;
 
 import de.jreality.plugin.basic.View;
 import de.jreality.scene.Viewer;
+import de.jreality.shader.CommonAttributes;
 import de.jtem.discretegroup.util.TextSlider;
 import de.jtem.jrworkspace.plugin.Controller;
 import de.jtem.jrworkspace.plugin.PluginInfo;
@@ -66,14 +68,20 @@ public class FogPlugin extends ShrinkPanelPlugin {
 
 	boolean fogEnabled = true;
 	double fogDensity = .1;
+	int fogMode = 1;
 	Viewer viewer;
 	
 	public FogPlugin()	{
 	}
 
+	public void setDensity(double d) {
+		fogDensity = d;
+	}
+	
 	private void updateFog() {
 		viewer.getSceneRoot().getAppearance().setAttribute(FOG_ENABLED, fogEnabled);
 		viewer.getSceneRoot().getAppearance().setAttribute(FOG_DENSITY, fogDensity);
+		viewer.getSceneRoot().getAppearance().setAttribute(FOG_MODE, fogMode);
 		viewer.renderAsync();
 	}
 

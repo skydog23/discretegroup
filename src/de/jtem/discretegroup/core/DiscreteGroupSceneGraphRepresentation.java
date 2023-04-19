@@ -158,7 +158,7 @@ public class DiscreteGroupSceneGraphRepresentation {
 				Transformation newTrans = new Transformation(showTheWorld[i].getArray());
 				newTrans.setName(showTheWorld[i].getWord());
 				tmp.setName("dge "+showTheWorld[i].getWord());
-				newTrans.setReadOnly(true);
+				//newTrans.setReadOnly(true);
 				tmp.setTransformation(newTrans);
 				if (showTheWorld[i] != null && appList != null)		{
 					DiscreteGroupElement dge = showTheWorld[i];
@@ -172,9 +172,9 @@ public class DiscreteGroupSceneGraphRepresentation {
 			SceneGraphComponent old = theSceneGraphRepn;
 			theSceneGraphRepn = theNewSGR;				
 			changeOfBasisNode.addChild(theSceneGraphRepn);
-			System.err.println("Deleting old");
+//			System.err.println("Deleting old");
 			changeOfBasisNode.removeChild(old);
-			System.err.println("Adding new");
+//			System.err.println("Adding new");
 			newElementList = false;
 			DefaultMatrixSupport.getSharedInstance().storeDefaultMatrices(theSceneGraphRepn);
 		}
@@ -200,7 +200,7 @@ public class DiscreteGroupSceneGraphRepresentation {
 			flat.setAppearance(worldNode.getAppearance());
 			flat.setGeometry(ifs);
 			changeOfBasisNode.addChild(flat);
-			System.err.println("Deleting old");
+//			System.err.println("Deleting old");
 			if (flatSceneGraphRepn != null) {
 				if (changeOfBasisNode.isDirectAncestor(flatSceneGraphRepn))
 					changeOfBasisNode.removeChild(flatSceneGraphRepn);				
