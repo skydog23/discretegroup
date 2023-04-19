@@ -158,7 +158,7 @@ public class DiscreteGroupSceneGraphRepresentation {
 				Transformation newTrans = new Transformation(showTheWorld[i].getArray());
 				newTrans.setName(showTheWorld[i].getWord());
 				tmp.setName("dge "+showTheWorld[i].getWord());
-				newTrans.setReadOnly(true);
+				//newTrans.setReadOnly(true);
 				tmp.setTransformation(newTrans);
 				if (showTheWorld[i] != null && appList != null)		{
 					DiscreteGroupElement dge = showTheWorld[i];

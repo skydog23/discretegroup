@@ -74,6 +74,10 @@ public class FogPlugin extends ShrinkPanelPlugin {
 	public FogPlugin()	{
 	}
 
+	public void setDensity(double d) {
+		fogDensity = d;
+	}
+	
 	private void updateFog() {
 		viewer.getSceneRoot().getAppearance().setAttribute(FOG_ENABLED, fogEnabled);
 		viewer.getSceneRoot().getAppearance().setAttribute(FOG_DENSITY, fogDensity);
