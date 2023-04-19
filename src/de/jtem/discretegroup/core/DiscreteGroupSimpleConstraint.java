@@ -128,6 +128,7 @@ public class DiscreteGroupSimpleConstraint implements DiscreteGroupConstraint {
 
 	public void setMaxNumberElements(int i) {
 		maxNumberElements = i;
+		broadcastChange();
 	}
 
 	public double[] getCenterPoint() {
@@ -138,6 +139,7 @@ public class DiscreteGroupSimpleConstraint implements DiscreteGroupConstraint {
 		this.centerPoint[3] = 1.0;
 		System.arraycopy(centerPoint, 0, this.centerPoint, 0, centerPoint.length);
 //		System.err.println("Setting centerpoint to "+Rn.toString(this.centerPoint));
+		broadcastChange();
 	}
 
 	public void update() {
@@ -148,12 +150,14 @@ public class DiscreteGroupSimpleConstraint implements DiscreteGroupConstraint {
 	public void setMaxDistance(double maxDistance) {
 		this.maxDistance = maxDistance;
 		System.err.println("max dist = "+maxDistance);
+		broadcastChange();
 	}
 	public int getMaxWordLength() {
 		return maxWordLength;
 	}
 	public void setMaxWordLength(int maxWordLength) {
 		this.maxWordLength = maxWordLength;
+		broadcastChange();
 	}
 	
 	public Component getInspector() {

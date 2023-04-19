@@ -58,7 +58,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import de.jreality.geometry.BoundingBoxUtility;
 import de.jreality.geometry.Primitives;
 import de.jreality.jogl.InstrumentedViewer;
 import de.jreality.jogl.plugin.HelpOverlay;
@@ -67,7 +66,6 @@ import de.jreality.math.Matrix;
 import de.jreality.math.MatrixBuilder;
 import de.jreality.math.P3;
 import de.jreality.math.Pn;
-import de.jreality.math.Rn;
 import de.jreality.plugin.JRViewer;
 import de.jreality.plugin.basic.Content;
 import de.jreality.plugin.basic.Scene;
@@ -76,7 +74,6 @@ import de.jreality.plugin.basic.View;
 import de.jreality.plugin.experimental.ViewerKeyListener;
 import de.jreality.scene.DirectionalLight;
 import de.jreality.scene.Geometry;
-import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.PointLight;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.SceneGraphNode;
@@ -87,19 +84,17 @@ import de.jreality.scene.event.CameraListener;
 import de.jreality.scene.pick.Graphics3D;
 import de.jreality.scene.tool.Tool;
 import de.jreality.tools.RotateTool;
-import de.jtem.discretegroup.util.FlyTool;
 import de.jreality.util.CameraUtility;
 import de.jreality.util.DefaultMatrixSupport;
-import de.jreality.util.Rectangle3D;
 import de.jreality.util.SceneGraphUtility;
 import de.jreality.util.SystemProperties;
-import de.jtem.discretegroup.core.DirichletDomain;
 import de.jtem.discretegroup.core.DiscreteGroup;
 import de.jtem.discretegroup.core.DiscreteGroupElement;
 import de.jtem.discretegroup.core.DiscreteGroupSceneGraphRepresentation;
 import de.jtem.discretegroup.core.DiscreteGroupSimpleConstraint;
 import de.jtem.discretegroup.core.DiscreteGroupUtility;
 import de.jtem.discretegroup.core.DiscreteGroupViewportConstraint;
+import de.jtem.discretegroup.util.FlyTool;
 import de.jtem.discretegroup.util.TextSlider;
 import de.jtem.jrworkspace.plugin.Controller;
 import de.jtem.jrworkspace.plugin.PluginInfo;
@@ -112,7 +107,7 @@ public class TessellatedContent extends Content {
 	SceneGraphComponent fundDomSGC = new SceneGraphComponent("fundDomSGC!");
 	boolean clipToCamera = false, 
 		followsCamera = false,
-		copycat = true,
+		copycat = false,
 		fogEnabled  = true,
 		showGroupLoader = true;
 	DiscreteGroupSimpleConstraint masterConstraint  = 
@@ -523,60 +518,60 @@ public class TessellatedContent extends Content {
 		speedSl.setValue(flySpeed);
 	}
 
-	public void adjustConstraints(int framerate)	{
-		de.jreality.jogl.JOGLViewer joglViewer;
-		if (!(viewer instanceof de.jreality.jogl.JOGLViewer)) {
-			System.err.println("Not a jogl viewer, can't get framerate");
-			return;
-		} 
-		joglViewer = (de.jreality.jogl.JOGLViewer) viewer;
-		if (joglViewer.getRenderer() == null) return;
-		double frate = joglViewer.getRenderer().getFramerate();
-		System.err.println("Frame rate = "+frate);
-		viewportConstraint = theRepn.getViewportConstraint();
-		int count = 0;
-		double ofrate = frate;
-		DirichletDomain dd = new DirichletDomain(theGroup);
-		dd.update();
-		IndexedFaceSet ddifs = dd.getDirichletDomain();
-		Rectangle3D bound = BoundingBoxUtility.calculateBoundingBox(ddifs);
-		double[] extent = bound.getExtent();
-		double norm = Rn.euclideanNorm(extent);
-		System.err.println("Bound is so big: "+norm);
-		while (count < 10 && (frate > 2* framerate || frate < .5 * framerate))	{
-			double factor = frate/framerate;
-			// following only works for euclidean case
-			factor = Math.pow(factor, 1/3.0);
-			if (factor > 2) factor = 2;
-			if (factor < .5) factor = .5;
-			double maxd = viewportConstraint.getMaxDistance() * factor;
-			if (maxd > masterConstraint.getMaxDistance()) {
-				masterConstraint.setMaxDistance(maxd);
-				updateMasterConstraint();
-			}
-			viewportConstraint.setMaxDistance(maxd);
-			viewportConstraint.update();
-			viewConstraintSP.update();
-//			try {
-//				Thread.sleep(500);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
+//	public void adjustConstraints(int framerate)	{
+//		de.jreality.jogl.JOGLViewer joglViewer;
+//		if (!(viewer instanceof de.jreality.jogl.JOGLViewer)) {
+//			System.err.println("Not a jogl viewer, can't get framerate");
+//			return;
+//		} 
+//		joglViewer = (de.jreality.jogl.JOGLViewer) viewer;
+//		if (joglViewer.getRenderer() == null) return;
+//		double frate = joglViewer.getRenderer().getFramerate();
+//		System.err.println("Frame rate = "+frate);
+//		viewportConstraint = theRepn.getViewportConstraint();
+//		int count = 0;
+//		double ofrate = frate;
+//		DirichletDomain dd = new DirichletDomain(theGroup);
+//		dd.update();
+//		IndexedFaceSet ddifs = dd.getDirichletDomain();
+//		Rectangle3D bound = BoundingBoxUtility.calculateBoundingBox(ddifs);
+//		double[] extent = bound.getExtent();
+//		double norm = Rn.euclideanNorm(extent);
+//		System.err.println("Bound is so big: "+norm);
+//		while (count < 10 && (frate > 2* framerate || frate < .5 * framerate))	{
+//			double factor = frate/framerate;
+//			// following only works for euclidean case
+//			factor = Math.pow(factor, 1/3.0);
+//			if (factor > 2) factor = 2;
+//			if (factor < .5) factor = .5;
+//			double maxd = viewportConstraint.getMaxDistance() * factor;
+//			if (maxd > masterConstraint.getMaxDistance()) {
+//				masterConstraint.setMaxDistance(maxd);
+//				updateMasterConstraint();
 //			}
-			for (int i = 0; i<200; ++i) 
-				joglViewer.render();
-			frate = joglViewer.getRenderer().getFramerate();
-			System.err.println("adjusting framerate = "+frate);
-			if (count > 0)	{
-				if (factor > 2 && frate > ofrate) {
-					System.err.println("viewport constraint no traction");
-					break;
-				}
-			}
-			ofrate = frate;
-			count++;
-		}
-	}
+//			viewportConstraint.setMaxDistance(maxd);
+//			viewportConstraint.update();
+//			viewConstraintSP.update();
+////			try {
+////				Thread.sleep(500);
+////			} catch (InterruptedException e) {
+////				// TODO Auto-generated catch block
+////				e.printStackTrace();
+////			}
+//			for (int i = 0; i<200; ++i) 
+//				joglViewer.render();
+//			frate = joglViewer.getRenderer().getFramerate();
+//			System.err.println("adjusting framerate = "+frate);
+//			if (count > 0)	{
+//				if (factor > 2 && frate > ofrate) {
+//					System.err.println("viewport constraint no traction");
+//					break;
+//				}
+//			}
+//			ofrate = frate;
+//			count++;
+//		}
+//	}
 
 	SceneGraphComponent euclideanLights;
 	private SceneGraphComponent lightSGC1, lightSGC2;
@@ -588,16 +583,21 @@ public class TessellatedContent extends Content {
 			new Color(255,255,255)};
 	private JCheckBox followCameraBox;
 	private JCheckBox clipCameraBox;
-	private DirichletDomainSP dirichletDomainSP;
-//	double[][] positions = {{0,0,1}, {0,1,0}, {1,0,0},{0,0,-1}, {0,-1,0}, {-1,0,0}};
+	//	double[][] positions = {{0,0,1}, {0,1,0}, {1,0,0},{0,0,-1}, {0,-1,0}, {-1,0,0}};
 	static double[] randmat = P3.makeRotationMatrix(null, new double[]{.3,-.5,.7}, new double[]{-.6,.5,-.2});
 	static Matrix randM = new Matrix(P3.makeScaleMatrix(null, new double[]{-1,-1,-1}));//randmat);
 	
 	double[][] positions = { {-1,-1,-1}, {-.1, 1, .2},{1, .3, -.1}, {.2, -.1, 1}}; //, 
 //			{1,1,1}, {1,-1,-1},{-1,1,-1}, {-1,-1,1}}; //{ {-1,-1,-1}, {-.3, 1, .2},{1, .3, -.4}, {.2, -.4, 1}};
+	double intensity = .5;
+	public void setLightIntensity(double i) {
+		intensity = i;
+		setupLights();
+	}
 	public void setupLights()	{
-		euclideanLights = new SceneGraphComponent("Euclidean Lights");
-		double intensity = .5;
+		if (euclideanLights == null) 
+			euclideanLights = new SceneGraphComponent("Euclidean Lights");
+		else euclideanLights.removeAllChildren();
 		for (int i = 0; i<positions.length; ++i)	{
 			SceneGraphComponent lightNode=new SceneGraphComponent("light"+i);
 			DirectionalLight light = new DirectionalLight();
@@ -635,13 +635,16 @@ public class TessellatedContent extends Content {
 //		MatrixBuilder.euclidean().rotateFromTo(new double[]{0,0,1}, new double[]{-1,-1,-1}).assignTo(lightNode4);
 //		euclideanLights.addChild(lightNode4);
 
-		hyperbolicLights = new SceneGraphComponent("Hyperbolic lights");
+		if (hyperbolicLights == null) 
+			hyperbolicLights = new SceneGraphComponent("Hyperbolic lights");
+		else hyperbolicLights.removeAllChildren();
+
 		lightSGC1 = SceneGraphUtility.createFullSceneGraphComponent("l1");
 //		lightSGC1.addChild(Primitives.sphere(.05, 0,0,0));
 		lightSGC1.getAppearance().setAttribute("polygonShader.diffuseColor",Color.WHITE);
  		PointLight pointLight1 = new PointLight();
 		pointLight1.setColor(Color.white);
- 		pointLight1.setIntensity(1.0);
+ 		pointLight1.setIntensity(intensity*2);
    		lightSGC1.setLight(pointLight1);
   		hyperbolicLights.addChild(lightSGC1);
 		lightSGC2 = SceneGraphUtility.createFullSceneGraphComponent("l2");
@@ -649,7 +652,7 @@ public class TessellatedContent extends Content {
 		lightSGC2.getAppearance().setAttribute("polygonShader.diffuseColor",new Color(255, 255, 200));
  		PointLight pointLight2 = new PointLight();
   		pointLight2.setColor(new Color(255, 255, 200));
- 		pointLight2.setIntensity(1.0);
+ 		pointLight2.setIntensity(intensity*2);
   		lightSGC2.setLight(pointLight2);
   		hyperbolicLights.addChild(lightSGC2);
   		MatrixBuilder.hyperbolic().translate(.2, .2, .2).assignTo(lightSGC2);
