@@ -51,6 +51,10 @@ public class DiscreteGroupTranslationConstraint implements
 		this(a,b,c,"abc");
 	}
 	
+	public DiscreteGroupTranslationConstraint(int a, int b, int c, int d)	{
+		this(a,b,c,d,"abcd");
+	}
+	
 	public DiscreteGroupTranslationConstraint(int a, int b, int c, String gens)	{
 		super();
 		dims = new int[]{a,b,c};
@@ -58,10 +62,17 @@ public class DiscreteGroupTranslationConstraint implements
 		this.gens = gens;
 		inv = this.gens.toUpperCase();
 	}
+	public DiscreteGroupTranslationConstraint(int a, int b, int c, int d, String gens)	{
+		super();
+		dims = new int[]{a,b,c, d};
+		dim = 4;
+		this.gens = gens;
+		inv = this.gens.toUpperCase();
+	}
 	public boolean acceptElement(DiscreteGroupElement dge) {
 		int[] counts = countGens(dge.getWord());
 		if (counts[0] < 0) return false;
-		for (int i = 0; i<3; ++i)	
+		for (int i = 0; i<dim; ++i)	
 			if (counts[i] >= dims[i]) return false;
 		return true;
 	}
@@ -74,7 +85,7 @@ public class DiscreteGroupTranslationConstraint implements
 		max = i;
 	}
 	private int[] countGens(String word)	{
-		int[] cnt = new int[3];
+		int[] cnt = new int[dim];
 		boolean valid = true;
 		for (int i = 0; i<word.length(); ++i)	{
 			for (int j = 0; j<3; ++j)	{
@@ -83,7 +94,7 @@ public class DiscreteGroupTranslationConstraint implements
 			}
 			if (!valid) break;
 		}
-		if (!valid) cnt[0] = cnt[1] = cnt[2] = -1;
+		if (!valid) for (int i = 0; i<dim; ++i) cnt[i] = -1;
 		return cnt;
 	}
 

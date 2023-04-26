@@ -72,7 +72,7 @@ import de.jtem.discretegroup.util.WingedEdge;
  * @author gunn
  *
  */
-public class DiscreteGroupSceneGraphRepresentation {
+public class DiscreteGroupSceneGraphRepresentation extends AbstractDGSGR{
 	protected SceneGraphComponent 
 		followCameraNode,
 			changeOfBasisNode,
@@ -99,6 +99,8 @@ public class DiscreteGroupSceneGraphRepresentation {
 	MatrixListData theDropBox = new MatrixListData("discrete group data");
 	HashMap<String, Object> dropBoxMap = new HashMap<String, Object>();
 	SceneGraphPath pathToMatrices, avatarPath;
+	DiscreteGroupConstraint constraint = null;
+	
 	public DiscreteGroupSceneGraphRepresentation(DiscreteGroup g) {
 		this(g, false, "");
 	}
@@ -106,7 +108,6 @@ public class DiscreteGroupSceneGraphRepresentation {
 		this(g, c, "");
 	}
 	public DiscreteGroupSceneGraphRepresentation(DiscreteGroup g, boolean c, String n) {
-		super();
 		System.err.println("copycat = "+c);
 		theGroup = g;
 		dirdom = new DirichletDomain(theGroup);
@@ -127,10 +128,28 @@ public class DiscreteGroupSceneGraphRepresentation {
 		fundamentalRegion.setAppearance(new Appearance());
 	}
 
-	private void initDropBoxMap() {
-		// TODO Auto-generated method stub
-		
+	
+	@Override
+	public void setConstraint(DiscreteGroupConstraint c) {
+		constraint = c;
+		if (constraint != null) AbstractDGSGR.applyConstraint(this, constraint);
+		else {
+			int n = theSceneGraphRepn.getChildComponentCount();
+			for (int i = 0; i<n;++i) {
+				theSceneGraphRepn.getChildComponent(i).setVisible(true);
+			}
+		}
+		System.err.println("applied constraint, sgr has # "+theSceneGraphRepn.getChildComponentCount());
 	}
+	
+	@Override
+	public DiscreteGroupConstraint getConstraint() {
+		return constraint;
+	}
+	
+	private void initDropBoxMap() {
+	}
+	
 	public void update()		{
 		if (newAppList || newElementList || elementList == null)	{
 			if (elementList == null) {
@@ -190,6 +209,8 @@ public class DiscreteGroupSceneGraphRepresentation {
 		}
 		updateFlatten();
 		SceneGraphUtility.setMetric(followCameraNode,theGroup.getMetric());
+		
+		if (constraint != null) AbstractDGSGR.applyConstraint(this, constraint);
 	}
 	private void updateFlatten() {
 		if (flatten) {

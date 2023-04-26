@@ -66,7 +66,9 @@ public class DiscreteGroupSimpleConstraint implements DiscreteGroupConstraint {
 	int maxNumberElements = 1500;
 	protected double[] centerPoint = {0,0,0,1};
 	boolean manhattan = false;
-
+	private int accepted = 0;
+	private boolean countAccepted = false;
+	
 	public static int globalMaxNumberElements = 1500;
 	private static int debug = 0;
 	public static DiscreteGroupSimpleConstraint defaultConstraint = new DiscreteGroupSimpleConstraint();
@@ -97,6 +99,7 @@ public class DiscreteGroupSimpleConstraint implements DiscreteGroupConstraint {
 	}
 
 	public boolean acceptElement(DiscreteGroupElement dge) {
+		if (accepted >= maxNumberElements) return false;
 		if (maxDistance < 0 && maxWordLength < 0) return true;
 		if (maxWordLength >= 0)	{
 			boolean accept = dge.getWord().length() <= maxWordLength;
@@ -119,7 +122,16 @@ public class DiscreteGroupSimpleConstraint implements DiscreteGroupConstraint {
 //			System.err.println("Word, dist: "+dge.getWord()+" "+d+" "+(d>maxDistance));
 			if (d > maxDistance) return false;
 		}
+		if (countAccepted) accepted++;
 		return true;
+	}
+	
+	public void setUseCount(boolean b) {
+		countAccepted = b;
+	}
+	
+	public void reset() {
+		accepted = 0;
 	}
 	
 	public int getMaxNumberElements() {
