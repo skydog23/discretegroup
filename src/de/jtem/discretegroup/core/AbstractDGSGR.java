@@ -46,6 +46,9 @@ public abstract class AbstractDGSGR {
 			SceneGraphComponent child =  root.getChildComponent(i);
 			double[] m = child.getTransformation().getMatrix();
 			dge.setArray(m);
+			String split[] = child.getName().split(" ");
+			if (split.length == 1) dge.setWord("");
+			else dge.setWord(split[1]);
 			child.setVisible( c.acceptElement(dge) ? true : false);
 		}
 		

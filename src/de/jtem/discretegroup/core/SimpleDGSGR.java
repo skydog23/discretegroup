@@ -4,6 +4,8 @@
  */
 package de.jtem.discretegroup.core;
 
+import java.nio.channels.Channels;
+
 import de.jreality.scene.Appearance;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.util.SceneGraphUtility;
@@ -78,14 +80,16 @@ public class SimpleDGSGR extends AbstractDGSGR {
 		// only do anything when the # of children of the root
 		// is different from the # of elements in the list
 		// this allows the user to set up the scene graph himself
-		boolean mismatch = (els == null || root.getChildComponentCount() != els.length);
+		if (els == null) return;
+		boolean mismatch = (root.getChildComponentCount() != els.length);
 		if (!dirty && !mismatch) return;
 		if (mismatch) root.removeAllChildren();
 		int n = els.length;
 		SceneGraphComponent child = null;
 		for (int i = 0; i < n; ++i) {
+//			System.err.println("dge word = "+els[i].getWord());
 			if (mismatch) {
-				child = SceneGraphUtility.createFullSceneGraphComponent("child" + i);
+				child = SceneGraphUtility.createFullSceneGraphComponent("dge "+els[i].getWord());
 				root.addChild(child);
 			} else {
 				child = root.getChildComponent(i);
