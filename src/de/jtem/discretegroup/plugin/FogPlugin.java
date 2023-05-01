@@ -57,7 +57,7 @@ import javax.swing.SwingConstants;
 
 import de.jreality.plugin.basic.View;
 import de.jreality.scene.Viewer;
-import de.jreality.shader.CommonAttributes;
+import de.jreality.util.Color;
 import de.jtem.discretegroup.util.TextSlider;
 import de.jtem.jrworkspace.plugin.Controller;
 import de.jtem.jrworkspace.plugin.PluginInfo;
@@ -67,7 +67,8 @@ import de.jtem.jrworkspace.plugin.sidecontainer.template.ShrinkPanelPlugin;
 public class FogPlugin extends ShrinkPanelPlugin {
 
 	boolean fogEnabled = true;
-	double fogDensity = .1;
+	double fogDensity = .1, fogBegin = 1.0, fogEnd = 5.0;
+	Color fogColor = Color.black;
 	int fogMode = 1;
 	Viewer viewer;
 	
@@ -117,7 +118,8 @@ public class FogPlugin extends ShrinkPanelPlugin {
 			}
 			
 		});
-		
+
+
 		final TextSlider<Double> fogSl = new TextSlider.Double("",
 				SwingConstants.HORIZONTAL, 0.0, 1.0, fogDensity);
 		fogSl.addActionListener(new ActionListener() {
