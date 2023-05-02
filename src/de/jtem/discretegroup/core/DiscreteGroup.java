@@ -276,9 +276,12 @@ public class DiscreteGroup {
 		return elementList;
 	}
 
-	public void setElementList(DiscreteGroupElement[] elementList) {
+	public void setElementList(DiscreteGroupElement[] elementList, boolean nogens) {
 		this.elementList = elementList;
-		hasGenerators = false;
+		hasGenerators = nogens;
+	}
+	public void setElementList(DiscreteGroupElement[] elementList) {
+		setElementList(elementList, generators!=null);
 	}
 
 	public SceneGraphComponent getGeneratorRepresentations() {

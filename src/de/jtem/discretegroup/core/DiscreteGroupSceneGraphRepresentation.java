@@ -139,7 +139,7 @@ public class DiscreteGroupSceneGraphRepresentation extends AbstractDGSGR{
 				theSceneGraphRepn.getChildComponent(i).setVisible(true);
 			}
 		}
-		System.err.println("applied constraint, sgr has # "+theSceneGraphRepn.getChildComponentCount());
+//		System.err.println("applied constraint, sgr has # "+theSceneGraphRepn.getChildComponentCount());
 	}
 	
 	@Override
@@ -209,7 +209,7 @@ public class DiscreteGroupSceneGraphRepresentation extends AbstractDGSGR{
 		}
 		updateFlatten();
 		SceneGraphUtility.setMetric(followCameraNode,theGroup.getMetric());
-		
+		System.err.println("DGSGR: element list # = "+theSceneGraphRepn.getChildComponentCount());
 		if (constraint != null) AbstractDGSGR.applyConstraint(this, constraint);
 	}
 	private void updateFlatten() {

@@ -42,6 +42,7 @@ public abstract class AbstractDGSGR {
 			((DiscreteGroupSimpleConstraint) c).setUseCount(true);
 			((DiscreteGroupSimpleConstraint) c).reset();
 		}
+		int vis = 0;
 		for (int i = 0; i<n; ++i)	{
 			SceneGraphComponent child =  root.getChildComponent(i);
 			double[] m = child.getTransformation().getMatrix();
@@ -50,7 +51,9 @@ public abstract class AbstractDGSGR {
 			if (split.length == 1) dge.setWord("");
 			else dge.setWord(split[1]);
 			child.setVisible( c.acceptElement(dge) ? true : false);
+			if (child.isVisible()) vis++;
 		}
+		System.err.println(n+" applyConstraint: visible # = "+vis);
 		
 	}
 }
