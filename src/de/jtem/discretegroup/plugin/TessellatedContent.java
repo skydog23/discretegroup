@@ -140,6 +140,7 @@ public class TessellatedContent extends Content {
 	static {
 		String foo = System.getProperty(SystemProperties.JOGL_COPY_CAT);
 		if (foo != null && foo.indexOf("true") == -1) canCopycat = false;
+		System.err.println("copy cat = "+canCopycat);
 	}
 
 	public void setupJRViewer(JRViewer jrv)	{
@@ -376,6 +377,10 @@ public class TessellatedContent extends Content {
 	public DiscreteGroupSimpleConstraint getMasterConstraint() {
 		return masterConstraint;
 	}
+	public FlyTool getFlyTool() {
+		return flyTool;
+	}
+
 	public DiscreteGroupViewportConstraint getViewportConstraint() {
 		return viewportConstraint;
 	}
@@ -673,7 +678,7 @@ public class TessellatedContent extends Content {
 		this.clipToCamera = clipToCamera;
 		clipCameraBox.setSelected(clipToCamera);
 		if (theRepn != null) theRepn.setClipToCamera(clipToCamera);
-		viewConstraintSP.getShrinkPanel().setVisible(clipToCamera);
+//		viewConstraintSP.getShrinkPanel().setVisible(clipToCamera);
 	}
 
 

@@ -97,7 +97,7 @@ public class DiscreteGroupSceneGraphRepresentation extends AbstractDGSGR{
 	String name = "";
 	Appearance[] appList = null;
 	MatrixListData theDropBox = new MatrixListData("discrete group data");
-	HashMap<String, Object> dropBoxMap = new HashMap<String, Object>();
+	int copyCatLimit = -1;
 	SceneGraphPath pathToMatrices, avatarPath;
 	DiscreteGroupConstraint constraint = null;
 	
@@ -113,7 +113,6 @@ public class DiscreteGroupSceneGraphRepresentation extends AbstractDGSGR{
 		dirdom = new DirichletDomain(theGroup);
 		copyCat = c;
 		theDropBox.setCopycat(copyCat);
-		initDropBoxMap();
 		name = n;
 		// set up scene graph representation
 		followCameraNode = SceneGraphUtility.createFullSceneGraphComponent(name+" DG Follow Camera"); 
@@ -128,7 +127,7 @@ public class DiscreteGroupSceneGraphRepresentation extends AbstractDGSGR{
 		fundamentalRegion.setAppearance(new Appearance());
 	}
 
-	
+	// a new feature added to allow a constraint to be applied "in place" by changing visibility.  
 	@Override
 	public void setConstraint(DiscreteGroupConstraint c) {
 		constraint = c;
@@ -145,9 +144,6 @@ public class DiscreteGroupSceneGraphRepresentation extends AbstractDGSGR{
 	@Override
 	public DiscreteGroupConstraint getConstraint() {
 		return constraint;
-	}
-	
-	private void initDropBoxMap() {
 	}
 	
 	public void update()		{
@@ -325,7 +321,7 @@ public class DiscreteGroupSceneGraphRepresentation extends AbstractDGSGR{
 			vlist[k] = true;
 		}
 		System.err.println("Setting matrix list");
-//		System.err.println("Updating matrix list length "+n);
+		System.err.println("Updating matrix list length "+n+" "+copyCatLimit);
 	}
 	
 	public int getCopyCatCount()	{

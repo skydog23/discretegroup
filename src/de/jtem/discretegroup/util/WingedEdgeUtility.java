@@ -386,6 +386,10 @@ public class WingedEdgeUtility {
 		ifs.setFaceAttributes(Attribute.INDICES, 	new IntArrayArray.Array(indices));
 	}
 
+	public static int[] getAdjacentVertices(WingedEdge we, int vi) {
+		
+		
+	}
 	public static SceneGraphComponent unfoldXY(WingedEdge we)	{
 		IndexedFaceSetFactory ifsf = new IndexedFaceSetFactory();
 		List<Face> remaining = new Vector<Face>();

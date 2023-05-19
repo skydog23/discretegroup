@@ -4,8 +4,6 @@
  */
 package de.jtem.discretegroup.core;
 
-import java.nio.channels.Channels;
-
 import de.jreality.scene.Appearance;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.util.SceneGraphUtility;
@@ -25,7 +23,7 @@ public class SimpleDGSGR extends AbstractDGSGR {
 	
 	public SimpleDGSGR(DiscreteGroup g)	{
 		super();
-		els = g.getElementList();
+		setElementList(g.getElementList());
 	}
 	
 	@Override
