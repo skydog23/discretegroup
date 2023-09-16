@@ -38,6 +38,7 @@
 
 package de.jtem.discretegroup.core;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collections;
@@ -45,8 +46,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JCheckBox;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
+import charlesgunn.util.TextSlider;
 import de.jreality.geometry.GeometryMergeFactory;
 import de.jreality.jogl.MatrixListData;
 import de.jreality.math.MatrixBuilder;
@@ -97,7 +105,8 @@ public class DiscreteGroupSceneGraphRepresentation extends AbstractDGSGR{
 	String name = "";
 	Appearance[] appList = null;
 	MatrixListData theDropBox = new MatrixListData("discrete group data");
-	int copyCatLimit = -1;
+	int cutoff = -1;
+	boolean doCutoff = true;
 	SceneGraphPath pathToMatrices, avatarPath;
 	DiscreteGroupConstraint constraint = null;
 	
@@ -321,7 +330,7 @@ public class DiscreteGroupSceneGraphRepresentation extends AbstractDGSGR{
 			vlist[k] = true;
 		}
 		System.err.println("Setting matrix list");
-		System.err.println("Updating matrix list length "+n+" "+copyCatLimit);
+		System.err.println("Updating matrix list length "+n+" "+cutoff);
 	}
 	
 	public int getCopyCatCount()	{
@@ -669,6 +678,38 @@ public class DiscreteGroupSceneGraphRepresentation extends AbstractDGSGR{
 	public void setShadeGeometry(boolean shadeGeometry) {
 		this.shadeGeometry = shadeGeometry;
 	}
+	
+	
+	public Component getInspector() {
+		Box vbox = Box.createVerticalBox();
+		vbox.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5),
+				BorderFactory.createTitledBorder(BorderFactory
+						.createEtchedBorder(), "diamond crystal")));
+		Box hbox = Box.createHorizontalBox();
+		vbox.add(hbox);
+		final TextSlider<Integer> lSlider = new TextSlider.Integer("xyz # cutoff",  SwingConstants.HORIZONTAL, -1, 12000 ,cutoff);
+		lSlider.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				cutoff = lSlider.getValue().intValue();
+				getDropBox().setCutoff(doCutoff ? cutoff : -1);
+			}
+		});
+		hbox.add(lSlider);
+		
+		final JCheckBox tcb = new JCheckBox("Do cutoff");
+		tcb.setSelected(doCutoff);
+		tcb.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				doCutoff = tcb.isSelected();
+				getDropBox().setCutoff(doCutoff ? cutoff : -1);
+			}
+		});
+		hbox.add(tcb);
+		return vbox;
+	}
+
 
 	class CopyCatAllInOne	{
 		
