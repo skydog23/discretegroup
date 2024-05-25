@@ -538,4 +538,11 @@ public class TriangleGroup extends DiscreteGroup {
 		return getDefaultFundamentalRegion(this);
 	}
 
+	public static void main(String[] args) {
+		TriangleGroup tg = TriangleGroup.instanceOfGroup("*237");
+		DiscreteGroupSimpleConstraint dgsc = new DiscreteGroupSimpleConstraint(-1.0,-1, 100000);
+		DiscreteGroupElement[] list = DiscreteGroupUtility.generateElements(tg, dgsc);
+		tg.setElementList(list);
+		System.err.println("tg # = "+tg.getElementList().length);
+	}
 }

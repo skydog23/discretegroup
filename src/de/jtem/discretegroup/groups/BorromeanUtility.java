@@ -55,6 +55,7 @@ import de.jreality.util.Secure;
 import de.jtem.discretegroup.ResourceClass;
 import de.jtem.discretegroup.core.DiscreteGroup;
 import de.jtem.discretegroup.core.DiscreteGroupElement;
+import de.jtem.discretegroup.core.DiscreteGroupSimpleConstraint;
 import de.jtem.discretegroup.core.DiscreteGroupUtility;
 import de.jtem.discretegroup.core.FiniteStateAutomaton;
 import de.jtem.discretegroup.util.WingedEdge;
@@ -300,4 +301,12 @@ public class BorromeanUtility {
 		return rets;
 	}
 
+	public static void main(String[] args) {
+		DiscreteGroup b4 = BorromeanUtility.borromeanGroupOfOrder(4);
+		DiscreteGroupSimpleConstraint dgsc = new DiscreteGroupSimpleConstraint(-1.0,-1, 10000);
+		DiscreteGroupElement[] list = DiscreteGroupUtility.generateElements(b4, dgsc);
+		b4.setElementList(list);
+		System.err.println("b4 # = "+b4.getElementList().length);
+		System.err.println("matrices = "+Rn.toString(list[99].getArray()));
+	}
 }
