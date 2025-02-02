@@ -38,7 +38,32 @@
 
 package de.jtem.discretegroup.core;
 
+import de.jreality.math.Rn;
+
 public class DiscreteGroupConstraintUtility {
+	public static DiscreteGroupConstraint directIsometryConstraint(boolean onlyDirect) {
+		final boolean od = onlyDirect;
+		return new DiscreteGroupConstraint()	{
+			int max = -1;
+			public boolean acceptElement(DiscreteGroupElement dge) {
+				if (Rn.determinant(dge.getArray()) < 0) return !od;
+				return od;
+			}
+
+			public int getMaxNumberElements() {
+				return max;
+			}
+			
+			public  void setMaxNumberElements(int i )	{
+				max = i;
+			}
+
+			public void update() {
+				
+			}
+			
+		};		
+	}
 	public static DiscreteGroupConstraint wordLengthConstraint(final int n)	{
 		if (n < 0) 	return new DiscreteGroupConstraint()	{
 			int max = 1;
