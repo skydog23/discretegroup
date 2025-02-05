@@ -46,8 +46,8 @@ public class DiscreteGroupConstraintUtility {
 		return new DiscreteGroupConstraint()	{
 			int max = -1;
 			public boolean acceptElement(DiscreteGroupElement dge) {
-				if (Rn.determinant(dge.getArray()) < 0) return !od;
-				return od;
+				if (od) return Rn.determinant(dge.getArray()) > 0;
+				return true;
 			}
 
 			public int getMaxNumberElements() {
