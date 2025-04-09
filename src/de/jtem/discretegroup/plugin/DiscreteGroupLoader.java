@@ -67,6 +67,7 @@ import de.jtem.discretegroup.core.ImportGroup;
 import de.jtem.discretegroup.groups.BorromeanUtility;
 import de.jtem.discretegroup.groups.CrystallographicGroup;
 import de.jtem.discretegroup.groups.Platycosm;
+import de.jtem.discretegroup.spacegroups.GroupGeneratorFactory;
 import de.jtem.jrworkspace.plugin.Controller;
 import de.jtem.jrworkspace.plugin.Plugin;
 import de.jtem.jrworkspace.plugin.PluginInfo;
@@ -127,6 +128,7 @@ public class DiscreteGroupLoader extends Plugin {
 	JMenu loadMenu = new JMenu(menuName),
 		platyMenu = new JMenu(platyName),
 		borromMenu = new JMenu(borromName),
+		irred3DMenu = new JMenu("irreducible 3D"),
 		otherMenu = new JMenu(otherName);
 
 	protected JMenu setupGUI()
@@ -167,6 +169,24 @@ public class DiscreteGroupLoader extends Plugin {
 		}
 		loadMenu.add(groupM);
 
+		groupM = new JMenu("irreducible 3D");
+		final String[] irredNames = {"1.","1.:2", "8.","8.:2"};
+		irred3DMenu = groupM;
+		bg = new ButtonGroup();
+		for (int i = 0; i<irredNames.length; ++i)	{
+			final int j = i;
+			JMenuItem jm = groupM.add(new JRadioButtonMenuItem(irredNames[i]));
+			jm.addActionListener( new ActionListener() {
+				public void actionPerformed(ActionEvent e)	{
+					DiscreteGroup dg = GroupGeneratorFactory.getD8Group(irredNames[j]);
+					initializeGroup(dg);
+					replaceGroup(dg);
+				}
+			});
+			bg.add(jm);
+		}
+		loadMenu.add(groupM);
+
 		otherMenu = groupM = new JMenu("Other");
 		JMenuItem jm = groupM.add(new JMenuItem("120-cell"));
 		jm.addActionListener(new ActionListener() {
@@ -187,6 +207,7 @@ public class DiscreteGroupLoader extends Plugin {
 			}
 			
 		});
+		
 		groupM.addSeparator();
 		jm = groupM.add(new JMenuItem("load..."));
 		jm.addActionListener(new ActionListener() {
