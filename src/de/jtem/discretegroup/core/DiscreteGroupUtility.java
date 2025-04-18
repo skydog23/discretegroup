@@ -91,11 +91,13 @@ public class DiscreteGroupUtility {
 	public static String resourceDir = "./resources/"; //"/net/MathVis/Projects/discreteGroup/resources/";
 	public static String triangleGroupFiles = "./";
 	public static Logger logger = LoggingSystem.getLogger(DiscreteGroup.class); //
+//	public static Logger logger = LoggingSystem.getLogger("de.jtem.discretegroup"); //
 	static {
 		try {		
 			logger.setLevel(Level.FINE);
 			System.err.println("Setting logging level to fine");
 			System.err.println("Log level is "+logger.getLevel().toString());
+			logger.info("Here is an info string");
 			//logger = Logger.getLogger("discreteGroup"); //LoggingSystem.getLogger();		
 			//logger.setLevel(Level.INFO);
 			String foo = Secure.getProperty("discreteGroup.resourceDir");

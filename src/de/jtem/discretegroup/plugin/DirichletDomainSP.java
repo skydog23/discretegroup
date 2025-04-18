@@ -1,6 +1,6 @@
 /**
  *
- * This package is open source software, made available under a BSD license:
+a * This package is open source software, made available under a BSD license:
  *
  * Copyright (c) 2009, Charles Gunn
  *
@@ -203,6 +203,10 @@ public class DirichletDomainSP extends ShrinkPanelPlugin implements GroupChanged
 		frontSGG.getAppearance().setAttribute("polygonShader.diffuseColor", new Color(153, 255, 100));
 		backSGC.getAppearance().setAttribute("polygonShader.diffuseColor", new Color(255, 176, 158));
 
+	}
+
+	public DirichletDomain getDirdom() {
+		return dirdom;
 	}
 
 	public void groupChanged(Event cce) {

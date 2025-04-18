@@ -38,18 +38,25 @@
 
 package de.jtem.discretegroup.tutorial;
 
+import charlesgunn.jreality.newtools.DraggingTool;
+import charlesgunn.jreality.tools.ScaleShapeTool;
 import de.jreality.math.MatrixBuilder;
 import de.jreality.math.Pn;
+import de.jreality.math.Rn;
 import de.jreality.plugin.JRViewer;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
+import de.jreality.scene.data.Attribute;
 import de.jreality.tools.RotateTool;
+import de.jreality.tools.ScaleTool;
 import de.jreality.util.CameraUtility;
 import de.jtem.discretegroup.core.DirichletDomain;
 import de.jtem.discretegroup.core.DiscreteGroup;
 import de.jtem.discretegroup.core.DiscreteGroupElement;
 import de.jtem.discretegroup.core.DiscreteGroupSceneGraphRepresentation;
 import de.jtem.discretegroup.core.DiscreteGroupSimpleConstraint;
+import de.jtem.discretegroup.groups.SpaceGroup;
+import de.jtem.discretegroup.util.TranslateTool;
 
 public class SimpleExample3D01 {
 	static boolean infiniteGroup = true;
@@ -58,20 +65,25 @@ public class SimpleExample3D01 {
 		DiscreteGroup dg = new DiscreteGroup();
 		dg.setMetric(Pn.EUCLIDEAN);	// only indirectly used, when creating various sorts of geometry associated to the group
 		dg.setDimension(3);			// ditto
-		dg.setConstraint(new DiscreteGroupSimpleConstraint(20));
+		DiscreteGroupSimpleConstraint constraint = new DiscreteGroupSimpleConstraint(1.0, -1, 48);
+		dg.setConstraint(constraint);
 		DiscreteGroupElement[] gens = null;
 		if (infiniteGroup)	 {
-			dg.setFinite(false);			// this is a 'hint' that can help optimize the group element generation
-			gens = new DiscreteGroupElement[4];
-			// create the generators: in this case reflections in the faces of a tetrahedron that is 1/48 of a cube
-			double[] xplane = {0,0,1,-1},
-					yplane = {0,-1,0,0},
-					zplane = {1,0,-1,0},
-					wplane = {-1,1,0,0};
-			gens[0] = new DiscreteGroupElement( Pn.EUCLIDEAN, MatrixBuilder.euclidean().reflect(xplane).getArray(), "x");
-			gens[1] = new DiscreteGroupElement( Pn.EUCLIDEAN, MatrixBuilder.euclidean().reflect(yplane).getArray(), "y");
-			gens[2] = new DiscreteGroupElement( Pn.EUCLIDEAN, MatrixBuilder.euclidean().reflect(zplane).getArray(), "z");
-			gens[3] = new DiscreteGroupElement( Pn.EUCLIDEAN, MatrixBuilder.euclidean().reflect(wplane).getArray(), "w");
+			dg = SpaceGroup.instanceOfGroup(0);
+			constraint.setManhattan(true);
+			dg.setConstraint(constraint);
+			dg.setFinite(false);
+//			dg.setFinite(false);			// this is a 'hint' that can help optimize the group element generation
+//			gens = new DiscreteGroupElement[4];
+//			// create the generators: in this case reflections in the faces of a tetrahedron that is 1/48 of a cube
+//			double[] xplane = {0,0,1,-1},
+//					yplane = {0,-1,0,0},
+//					zplane = {1,0,-1,0},
+//					wplane = {-1,1,0,0};
+//			gens[0] = new DiscreteGroupElement( Pn.EUCLIDEAN, MatrixBuilder.euclidean().reflect(xplane).getArray(), "x");
+//			gens[1] = new DiscreteGroupElement( Pn.EUCLIDEAN, MatrixBuilder.euclidean().reflect(yplane).getArray(), "y");
+//			gens[2] = new DiscreteGroupElement( Pn.EUCLIDEAN, MatrixBuilder.euclidean().reflect(zplane).getArray(), "z");
+//			gens[3] = new DiscreteGroupElement( Pn.EUCLIDEAN, MatrixBuilder.euclidean().reflect(wplane).getArray(), "w");
 		} else {
 			dg.setFinite(true);			// this is a 'hint' that can help optimize the group element generation
 			// create the generators: in this case reflections in the three coordinate axes.
@@ -83,21 +95,24 @@ public class SimpleExample3D01 {
 			gens[0] = new DiscreteGroupElement( Pn.EUCLIDEAN, MatrixBuilder.euclidean().reflect(xplane).getArray(), "x");
 			gens[1] = new DiscreteGroupElement( Pn.EUCLIDEAN, MatrixBuilder.euclidean().reflect(yplane).getArray(), "y");
 			gens[2] = new DiscreteGroupElement( Pn.EUCLIDEAN, MatrixBuilder.euclidean().reflect(zplane).getArray(), "z");
+			dg.setGenerators(gens);
 		}
-		dg.setGenerators(gens);
 		// now generate the group elements, in this simple case we get them all without having to specify anything
 		dg.update();
 		DirichletDomain dd = new DirichletDomain(dg);
-		dg.setCenterPoint(new double[]{.1,.2,.3});
 		dd.update();
-		// create a scene graph representation of the group
-		DiscreteGroupSceneGraphRepresentation dgsgr = new DiscreteGroupSceneGraphRepresentation(dg);
+		double[] sum = dg.getCenterPoint();
+		System.err.println("Center point = "+Rn.toString(sum));
+		double[] sum3 = {sum[0], sum[1], sum[2]};
 		// construct a scene graph component to represent one fundamental domain
 		SceneGraphComponent fundDomSGC = new SceneGraphComponent("fundDomSGC");
 		fundDomSGC.setGeometry(dd.getDirichletDomain());
-		fundDomSGC.addTool(new RotateTool());
+		MatrixBuilder.euclidean().translate(sum3).scale(.7).translate(Rn.times(null, -1, sum3)).assignTo(fundDomSGC);
+		fundDomSGC.addTool(new DraggingTool());
 //		MatrixBuilder.euclidean().scale(.5).assignTo(fundDomSGC);
 		// attach it to the scene graph representation
+		// create a scene graph representation of the group
+		DiscreteGroupSceneGraphRepresentation dgsgr = new DiscreteGroupSceneGraphRepresentation(dg);
 		dgsgr.setWorldNode(fundDomSGC);
 		// this will generate a jReality scene graph
 		dgsgr.update();

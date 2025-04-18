@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.jreality.geometry.IndexedFaceSetFactory;
 import de.jreality.geometry.IndexedFaceSetUtility;
@@ -17,12 +18,21 @@ import de.jreality.math.P3;
 import de.jreality.math.Pn;
 import de.jreality.math.Rn;
 import de.jreality.scene.IndexedFaceSet;
+import de.jreality.util.LoggingSystem;
 import de.jtem.discretegroup.groups.WallpaperGroup;
+import de.jtem.discretegroup.spacegroups.GroupGeneratorFactory;
 import de.jtem.discretegroup.util.WingedEdge;
 import de.jtem.discretegroup.util.WingedEdge.Face;
 import de.jtem.discretegroup.util.WingedEdgeUtility;
 
 public class DirichletDomain {
+
+	
+	static Logger logger = LoggingSystem.getLogger(GroupGeneratorFactory.class);
+	static {
+		logger.setLevel(Level.WARNING);
+		logger.info("Here is an info string DD");
+	}
 
 	DiscreteGroup group;
 	int orbitSize = 75;
@@ -118,7 +128,7 @@ public class DirichletDomain {
 				Rn.matrixTimesVector(orbit, elementList[i].getArray(), centerPoint);
 //					Rn.matrixTimesVector(orbit,cobm, orbit);
 				if (Pn.distanceBetween(orbit, centerPoint, metric) < 10E-8) {
-					System.err.println("calcDD: fixed point!!");
+					logger.info("calcDD: fixed point!!");
 					continue;
 //						System.err.println("matrix = "+Rn.matrixToString(elementList[i].getMatrix()));
 //						double[] cp2 = new double[4];
@@ -130,7 +140,7 @@ public class DirichletDomain {
 				Pn.normalizePlane(pb, pb, metric);
 //					System.err.println("perp bis = "+Rn.toString(pb));
 				if (!tmpWE.cutWithPlane(pb, i, elementList[i])) continue; //elementList[i].getColorIndex(), elementList[i]);
-//					System.err.println("dd: cut with word "+elementList[i].getWord());
+					logger.info("dd: cut with word "+elementList[i].getWord());
 				
 				if (tmpWE.getNumFaces() == 0) return;
 //					log.info("Orbit point"+Rn.toString(orbit));
@@ -140,15 +150,18 @@ public class DirichletDomain {
 				if (i > group.getGenerators().length) {
 					tmpWE.update();
 					if (allFacesMatched(tmpWE)) {
-						System.err.println("dirdom succeeded after "+i+" iterations.");
+						logger.info("dirdom succeeded after "+i+" iterations.");
 						break;
 					}
 				} 
 			}
 				tmpWE.update();
-//				for (Face f: dd.getFaceList())	{
-//					System.err.println("word = "+((DiscreteGroupElement) f.source).getWord());
-//				}
+				for (Face f: tmpWE.getFaceList())	{
+					logger.info("word = "+((DiscreteGroupElement) f.source).getWord());
+				}
+				for (WingedEdge.Vertex v: tmpWE.getVertexList())	{
+					logger.info("point = "+Rn.toString(v.point));
+				}
 //				return dd;
 			}
 //			return null;
@@ -248,7 +261,7 @@ public class DirichletDomain {
 			}
 			i++;
 		}
-		System.err.println("Found "+map.size()+" pairs");
+		logger.info("Found "+map.size()+" pairs");
 		return map;
 	}
 

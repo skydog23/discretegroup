@@ -43,34 +43,41 @@ import java.awt.Color;
 import charlesgunn.jreality.plugin.TermesSpherePlugin;
 import de.jreality.geometry.Primitives;
 import de.jreality.math.MatrixBuilder;
+import de.jreality.math.Rn;
 import de.jreality.plugin.JRViewer;
 import de.jreality.scene.Appearance;
 import de.jreality.scene.SceneGraphComponent;
+import de.jreality.scene.data.Attribute;
 import de.jreality.shader.CommonAttributes;
 import de.jreality.util.CameraUtility;
+import de.jreality.util.SceneGraphUtility;
 import de.jreality.util.SystemProperties;
+import de.jtem.discretegroup.core.DirichletDomain;
 import de.jtem.discretegroup.core.DiscreteGroup;
 import de.jtem.discretegroup.core.DiscreteGroupColorPicker;
 import de.jtem.discretegroup.core.DiscreteGroupSimpleConstraint;
 import de.jtem.discretegroup.groups.Platycosm;
+import de.jtem.discretegroup.groups.SpaceGroup;
+import de.jtem.discretegroup.plugin.DirichletDomainSP;
 import de.jtem.discretegroup.plugin.TessellatedContent;
 import de.jtem.discretegroup.util.TranslateTool;
+import de.jtem.discretegroup.util.WingedEdge;
 
 public class TessellatedContentExample3D  {
 
 	DiscreteGroup dg;
 	TessellatedContent tessellatedContent = new TessellatedContent();
 	static boolean copycat = false;
-	
+	SceneGraphComponent fundDomSGC = SceneGraphUtility.createFullSceneGraphComponent("fundDomSGC");
+	SceneGraphComponent wrapper = SceneGraphUtility.createFullSceneGraphComponent("wrapper");
+	DirichletDomainSP ddsp = null;
 	public SceneGraphComponent getContent()	{
 		// construct a scene graph component to represent one fundamental domain
-		SceneGraphComponent fundDomSGC = new SceneGraphComponent("fundDomSGC");
-		fundDomSGC.setGeometry(Primitives.cube());
-		SceneGraphComponent wrapper = new SceneGraphComponent("wrapper");
-		wrapper.addChild(fundDomSGC);
-		wrapper.addTool(new TranslateTool());
-		MatrixBuilder.euclidean().translate(.5,.3,0).scale(.3).assignTo(fundDomSGC);
-		return wrapper;
+		//fundDomSGC.setGeometry(Primitives.cube());
+//		wrapper.addChild(fundDomSGC);
+		fundDomSGC.addTool(new TranslateTool());
+//		MatrixBuilder.euclidean().translate(.5,.3,0).scale(.3).assignTo(fundDomSGC);
+		return fundDomSGC;
 	}
 	public static void main(String[] args) {
 		System.setProperty(SystemProperties.JOGL_COPY_CAT, copycat ? "true" : "false");
@@ -79,16 +86,37 @@ public class TessellatedContentExample3D  {
 	}
 	
 	private void doIt() {
-		dg = Platycosm.instanceOfGroup("c3");
-		dg.setConstraint(new DiscreteGroupSimpleConstraint(500));
-		dg.setColorPicker(new DiscreteGroupColorPicker.RotationColorPicker(3));
+//		dg = Platycosm.instanceOfGroup("c3");
+		ddsp = new DirichletDomainSP(tessellatedContent);
+		dg = SpaceGroup.instanceOfGroup(SpaceGroup._8o);
+		DiscreteGroupSimpleConstraint constraint = new DiscreteGroupSimpleConstraint(1,-1,200);
+		constraint.setManhattan(true);
+		dg.setConstraint(constraint);
+//		dg.setColorPicker(new DiscreteGroupColorPicker.RotationColorPicker(3));
 		dg.update();
+		System.err.println("ready to call dd");
+		DirichletDomain dd = new DirichletDomain(dg);
+		dd.update();
+		WingedEdge we = (WingedEdge) dd.getDirichletDomain();
+		we.update();
+		double[][] verts = we.getVertexAttributes(Attribute.COORDINATES).toDoubleArrayArray(null);
+		System.err.println("Vertices of DD = "+Rn.toString(verts));
+		double[] sum = dg.getCenterPoint();
+		System.err.println("Center point = "+Rn.toString(sum));
+		double[] sum3 = {sum[0], sum[1], sum[2]};
+		// construct a scene graph component to represent one fundamental domain
+		fundDomSGC.setGeometry(dd.getDirichletDomain());
+		Appearance ap = fundDomSGC.getAppearance();
+		ap.setAttribute("pointShader.diffuseColor", Color.yellow);
+//		MatrixBuilder.euclidean().translate(sum3).scale(.7).translate(Rn.times(null, -1, sum3)).assignTo(fundDomSGC);
+
+
 		Appearance red = new Appearance();
 		red.setAttribute(CommonAttributes.POLYGON_SHADER+"."+CommonAttributes.DIFFUSE_COLOR, Color.red);
 		red.setAttribute(CommonAttributes.LINE_SHADER+"."+CommonAttributes.DIFFUSE_COLOR, Color.yellow);
 		Appearance blue = new Appearance();
 		blue.setAttribute(CommonAttributes.POLYGON_SHADER+"."+CommonAttributes.DIFFUSE_COLOR, Color.blue);
-		blue.setAttribute(CommonAttributes.LINE_SHADER+"."+CommonAttributes.DIFFUSE_COLOR, Color.green);
+		blue.setAttribute(CommonAttributes.LINE_SHADER+"."+CommonAttributes.DIFFUSE_COLOR, Color.yellow);
 		Appearance green = new Appearance();
 		blue.setAttribute(CommonAttributes.POLYGON_SHADER+"."+CommonAttributes.DIFFUSE_COLOR, Color.green);
 		blue.setAttribute(CommonAttributes.LINE_SHADER+"."+CommonAttributes.DIFFUSE_COLOR, Color.yellow);
@@ -98,16 +126,20 @@ public class TessellatedContentExample3D  {
 		jrv.addBasicUI();
 		tessellatedContent.setupJRViewer(jrv);
 		jrv.registerPlugin(new TermesSpherePlugin(false));
+		jrv.registerPlugin(ddsp);
 		jrv.registerPlugin(tessellatedContent);
 		jrv.startup();
 		tessellatedContent.setFlySpeed(.5);
-		tessellatedContent.setScale(.5);
+		tessellatedContent.setScale(1.0);
 		tessellatedContent.setFollowsCamera(false);
 		tessellatedContent.setClipToCamera(false);
 		tessellatedContent.setGroup(dg, copycat);
 		tessellatedContent.setContent(getContent());
 		tessellatedContent.getTheRepn().setAppList(new Appearance[]{red,blue,green});
 		tessellatedContent.getTheRepn().update();
+		tessellatedContent.getTheRepn().getRepresentationRoot().addChild(wrapper);
+		wrapper.setGeometry(Primitives.cube());
+		wrapper.getAppearance().setAttribute(CommonAttributes.FACE_DRAW, false);
 		CameraUtility.getCamera(jrv.getViewer()).setFar(30);
 		jrv.getViewer().getSceneRoot().getAppearance().setAttribute("backgroundColors", Appearance.INHERITED);
 		jrv.getViewer().getSceneRoot().getAppearance().setAttribute("backgroundColor",new Color(0,0,0,0));
