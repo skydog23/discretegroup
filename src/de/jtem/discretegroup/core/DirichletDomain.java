@@ -30,7 +30,7 @@ public class DirichletDomain {
 	
 	static Logger logger = LoggingSystem.getLogger(GroupGeneratorFactory.class);
 	static {
-		logger.setLevel(Level.WARNING);
+		logger.setLevel(Level.INFO);
 		logger.info("Here is an info string DD");
 	}
 
@@ -136,11 +136,16 @@ public class DirichletDomain {
 //						Rn.matrixTimesVector(orbit, elementList[i].getMatrix(), cp2);
 //						Rn.matrixTimesVector(orbit,cobm, orbit);
 				}
+							
 				P3.perpendicularBisector(pb,cobCenter, orbit, metric);
 				Pn.normalizePlane(pb, pb, metric);
+				//if (elementList[i].getWord() == "e")
+				String wd = elementList[i].getWord();
+				if (wd.length() == 1) logger.info("word = "+elementList[i].getWord());
 //					System.err.println("perp bis = "+Rn.toString(pb));
 				if (!tmpWE.cutWithPlane(pb, i, elementList[i])) continue; //elementList[i].getColorIndex(), elementList[i]);
-					logger.info("dd: cut with word "+elementList[i].getWord());
+				logger.info("dd: cut with word "+elementList[i].getWord());
+				if (wd.length() == 1) logger.info("Perpendicular bisector"+Rn.toString(pb));
 				
 				if (tmpWE.getNumFaces() == 0) return;
 //					log.info("Orbit point"+Rn.toString(orbit));

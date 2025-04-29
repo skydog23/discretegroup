@@ -68,6 +68,7 @@ import de.jreality.math.P3;
 import de.jreality.math.Pn;
 import de.jreality.plugin.JRViewer;
 import de.jreality.plugin.basic.Content;
+import de.jreality.plugin.basic.InfoOverlayPlugin;
 import de.jreality.plugin.basic.Scene;
 import de.jreality.plugin.basic.ToolSystemPlugin;
 import de.jreality.plugin.basic.View;
@@ -107,7 +108,7 @@ public class TessellatedContent extends Content {
 	SceneGraphComponent fundDomSGC = new SceneGraphComponent("fundDomSGC!");
 	boolean clipToCamera = false, 
 		followsCamera = false,
-		copycat = false,
+		copycat = true,
 		fogEnabled  = true,
 		showGroupLoader = true;
 	DiscreteGroupSimpleConstraint masterConstraint  = 
@@ -147,6 +148,7 @@ public class TessellatedContent extends Content {
 		initConstraints();
 		jrv.registerPlugin(viewConstraintSP);
 		jrv.registerPlugin(masterConstraintSP);
+		jrv.registerPlugin(new InfoOverlayPlugin());
 	}
 	
 	public TessellatedContent()	{
@@ -312,9 +314,9 @@ public class TessellatedContent extends Content {
 			setMasterConstraint((DiscreteGroupSimpleConstraint) theGroup.getConstraint());
 		}
 					
-		if (copycat && !canCopycat) {
-			throw new IllegalArgumentException("can't apply copycat");
-		}
+//		if (copycat && !canCopycat) {
+//			throw new IllegalArgumentException("can't apply copycat");
+//		}
 		if (theRepn != null)	{
 			getContentRoot().removeChild(theRepn.getRepresentationRoot());
 			theRepn.dispose();

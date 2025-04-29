@@ -29,12 +29,12 @@ class D4 {
 
   static HashMap<String, Matrix> generators = new HashMap<String, Matrix>();
   static Hashtable<String, String> translator = new Hashtable<String, String>();
-  public static double scaleFactor = 2.0;
+  public static double latticeSize = 2.0;
   // fundamental tetrahedron
   public static double[] q0 = {0,0,0,1},
- 		q1 = {.5*scaleFactor,.5*scaleFactor,.5*scaleFactor,1},
-     	q2 = {scaleFactor,0,0,1},
-  	q3 = {.5*scaleFactor,.5*scaleFactor,-.5*scaleFactor,1};
+ 		q1 = {.5*latticeSize,.5*latticeSize,.5*latticeSize,1},
+     	q2 = {latticeSize,0,0,1},
+  	    q3 = {.5*latticeSize,.5*latticeSize,-.5*latticeSize,1};
 
   static {
     translator.put("(02)(13)", "Z");
@@ -127,7 +127,7 @@ class D4 {
 
   }
 
-  static final double[] reflOrigin = P3.makeScaleMatrix(null, -1);
+  static final double[] reflOrigin = P3.makeScaleMatrix(null, 1,1,-1);
   private static double[] makePointReflectionMatrix(double[] dst, double[] point, int metric)	{
 	  if (dst == null) dst = new double[16];
 	  double[] trans = P3.makeTranslationMatrix(null, point, metric);

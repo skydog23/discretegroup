@@ -63,8 +63,8 @@ public class GroupGeneratorFactory {
 		double[] dir1 = {1,-1,-1,0};
 		double[] dir2 = {-1,-1,1,0};
 		double[] dir3 = {-1,1,-1,0};
-		double s2 = 1.0;
-		double[] p2 = { s2*D4.scaleFactor, s2*D4.scaleFactor, s2*D4.scaleFactor, 1};
+		double s2 = .5;
+		double[] p2 = { s2*D4.latticeSize, s2*D4.latticeSize, s2*D4.latticeSize, 1};
 		
 		double[] rot1 = P3.makeRotationMatrix(null,  dir0, Math.PI*2.0/3.0);
 		double[] rot2 = P3.makeRotationMatrix(null,  dir1, Math.PI*2.0/3.0);
@@ -94,7 +94,7 @@ public class GroupGeneratorFactory {
         gens[2].setWord(generateUniqueWord());
 
         for (int i =0; i<3; ++i)	{
-        	gens[3+i] = (DiscreteGroupElement) gens[i].getInverse();
+        	gens[3+i] = gens[i].getInverse();
         }
 		logGens(gens);
 		return gens;
@@ -103,9 +103,9 @@ public class GroupGeneratorFactory {
 	public static DiscreteGroupElement[] generateT2() {
 		double[] p0 = {0,0,0,1};
 		double[] dir0 = {1,1,1,0};
-		double[] p1 = {0,D4.scaleFactor,0,1};
+		double[] p1 = {0,D4.latticeSize,0,1};
 		double[] dir1 = {1,-1,-1,0};
-		double[] p2 = { D4.scaleFactor, D4.scaleFactor, D4.scaleFactor, 1};
+		double[] p2 = { D4.latticeSize, D4.latticeSize, D4.latticeSize, 1};
 		
 		double[] rot1 = P3.makeRotationMatrix(null, p0, dir0, Math.PI*2.0/3.0, Pn.EUCLIDEAN);
 		double[] rot2 = P3.makeRotationMatrix(null, p1, dir1, Math.PI*2.0/3.0, Pn.EUCLIDEAN);
@@ -400,7 +400,7 @@ public class GroupGeneratorFactory {
 		}
 		logGens(gens);
 		dg.setGenerators(gens);
-		dg.setCenterPoint(new double[]{.07*D4.scaleFactor,.05*D4.scaleFactor,.03*D4.scaleFactor,1});
+		dg.setCenterPoint(new double[]{.07*D4.latticeSize,.05*D4.latticeSize,.03*D4.latticeSize,1});
 		
 		DiscreteGroupSimpleConstraint masterConstraint  = 
 				new DiscreteGroupSimpleConstraint(-1,-1,1);

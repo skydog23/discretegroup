@@ -40,6 +40,9 @@ package de.jtem.discretegroup.tutorial;
 
 import java.awt.Color;
 
+import charlesgunn.anim.jreality.SceneGraphAnimator;
+import charlesgunn.anim.plugin.AnimationPlugin;
+import charlesgunn.anim.util.AnimationUtility;
 import charlesgunn.jreality.plugin.TermesSpherePlugin;
 import de.jreality.geometry.Primitives;
 import de.jreality.math.MatrixBuilder;
@@ -60,6 +63,7 @@ import de.jtem.discretegroup.groups.Platycosm;
 import de.jtem.discretegroup.groups.SpaceGroup;
 import de.jtem.discretegroup.plugin.DirichletDomainSP;
 import de.jtem.discretegroup.plugin.TessellatedContent;
+import de.jtem.discretegroup.spacegroups.GroupGeneratorFactory;
 import de.jtem.discretegroup.util.TranslateTool;
 import de.jtem.discretegroup.util.WingedEdge;
 
@@ -75,7 +79,7 @@ public class TessellatedContentExample3D  {
 		// construct a scene graph component to represent one fundamental domain
 		//fundDomSGC.setGeometry(Primitives.cube());
 //		wrapper.addChild(fundDomSGC);
-		fundDomSGC.addTool(new TranslateTool());
+//		fundDomSGC.addTool(new TranslateTool());
 //		MatrixBuilder.euclidean().translate(.5,.3,0).scale(.3).assignTo(fundDomSGC);
 		return fundDomSGC;
 	}
@@ -88,7 +92,8 @@ public class TessellatedContentExample3D  {
 	private void doIt() {
 //		dg = Platycosm.instanceOfGroup("c3");
 		ddsp = new DirichletDomainSP(tessellatedContent);
-		dg = SpaceGroup.instanceOfGroup(SpaceGroup._8o);
+		dg = SpaceGroup.instanceOfGroup(SpaceGroup._4o2);
+//		dg = GroupGeneratorFactory.getD8Group("2.:2");
 		DiscreteGroupSimpleConstraint constraint = new DiscreteGroupSimpleConstraint(1,-1,200);
 		constraint.setManhattan(true);
 		dg.setConstraint(constraint);
@@ -99,11 +104,8 @@ public class TessellatedContentExample3D  {
 		dd.update();
 		WingedEdge we = (WingedEdge) dd.getDirichletDomain();
 		we.update();
-		double[][] verts = we.getVertexAttributes(Attribute.COORDINATES).toDoubleArrayArray(null);
-		System.err.println("Vertices of DD = "+Rn.toString(verts));
 		double[] sum = dg.getCenterPoint();
 		System.err.println("Center point = "+Rn.toString(sum));
-		double[] sum3 = {sum[0], sum[1], sum[2]};
 		// construct a scene graph component to represent one fundamental domain
 		fundDomSGC.setGeometry(dd.getDirichletDomain());
 		Appearance ap = fundDomSGC.getAppearance();
@@ -125,10 +127,18 @@ public class TessellatedContentExample3D  {
 		JRViewer jrv = new JRViewer();
 		jrv.addBasicUI();
 		tessellatedContent.setupJRViewer(jrv);
+		AnimationPlugin animplugin = new AnimationPlugin();
+		animplugin.getAnimationPanel().getRecordPrefs().setCurrentDirectoryPath("/Users/gunn/Pictures/bottleLabels/");
+		animplugin.getAnimationPanel().setResourceDir("src/de/jtem/discretegroup/tutorial/");
+		jrv.registerPlugin(animplugin);
 		jrv.registerPlugin(new TermesSpherePlugin(false));
 		jrv.registerPlugin(ddsp);
 		jrv.registerPlugin(tessellatedContent);
 		jrv.startup();
+
+		animplugin.setAnimateSceneGraph(true);
+		animplugin.setAnimateCamera(true);
+
 		tessellatedContent.setFlySpeed(.5);
 		tessellatedContent.setScale(1.0);
 		tessellatedContent.setFollowsCamera(false);
@@ -137,12 +147,17 @@ public class TessellatedContentExample3D  {
 		tessellatedContent.setContent(getContent());
 		tessellatedContent.getTheRepn().setAppList(new Appearance[]{red,blue,green});
 		tessellatedContent.getTheRepn().update();
+		ap = tessellatedContent.getTheRepn().getRepresentationRoot().getAppearance();
+		ap.setAttribute(SceneGraphAnimator.ANIMATED, false);
 		tessellatedContent.getTheRepn().getRepresentationRoot().addChild(wrapper);
 		wrapper.setGeometry(Primitives.cube());
 		wrapper.getAppearance().setAttribute(CommonAttributes.FACE_DRAW, false);
+		wrapper.getAppearance().setAttribute(CommonAttributes.LINE_SHADER+"."+CommonAttributes.DIFFUSE_COLOR, Color.white);
 		CameraUtility.getCamera(jrv.getViewer()).setFar(30);
 		jrv.getViewer().getSceneRoot().getAppearance().setAttribute("backgroundColors", Appearance.INHERITED);
 		jrv.getViewer().getSceneRoot().getAppearance().setAttribute("backgroundColor",new Color(0,0,0,0));
+		CameraUtility.encompass(jrv.getViewer());
+		CameraUtility.getCamera(jrv.getViewer()).setNear(.1);
 	}
 
 }

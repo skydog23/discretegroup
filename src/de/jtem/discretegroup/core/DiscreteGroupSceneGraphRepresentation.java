@@ -54,6 +54,7 @@ import javax.swing.Timer;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import charlesgunn.anim.jreality.SceneGraphAnimator;
 import charlesgunn.util.TextSlider;
 import de.jreality.geometry.GeometryMergeFactory;
 import de.jreality.jogl.MatrixListData;
@@ -134,6 +135,8 @@ public class DiscreteGroupSceneGraphRepresentation extends AbstractDGSGR{
 		changeOfBasisNode.addChild( theSceneGraphRepn);
 		fundamentalRegion = new SceneGraphComponent(name+" DG fundamental Domain"); //SceneGraphUtility.createFullSceneGraphComponent("DG Geometry");
 		fundamentalRegion.setAppearance(new Appearance());
+		
+		theSceneGraphRepn.getAppearance().setAttribute(SceneGraphAnimator.ANIMATED, false);
 	}
 
 	// a new feature added to allow a constraint to be applied "in place" by changing visibility.  
