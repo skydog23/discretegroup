@@ -28,7 +28,7 @@ import de.jtem.discretegroup.util.WingedEdgeUtility;
 public class DirichletDomain {
 
 	
-	static Logger logger = LoggingSystem.getLogger(GroupGeneratorFactory.class);
+	static Logger logger = LoggingSystem.getLogger(DirichletDomain.class);
 	static {
 		logger.setLevel(Level.WARNING);
 		logger.info("Here is an info string DD");
@@ -143,10 +143,10 @@ public class DirichletDomain {
 					logger.info("dd: cut with word "+elementList[i].getWord());
 				
 				if (tmpWE.getNumFaces() == 0) return;
-//					log.info("Orbit point"+Rn.toString(orbit));
-//					log.info("Perpendicular bisector"+Rn.toString(pb));
-//					log.info("i = "+i);
-//					log.info("matrix = "+Rn.matrixToString(elementList[i].getMatrix()));
+					logger.info("Orbit point"+Rn.toString(orbit));
+					logger.info("Perpendicular bisector"+Rn.toString(pb));
+					logger.info("i = "+i);
+					logger.info("matrix = "+Rn.matrixToString(elementList[i].getMatrix().getArray()));
 				if (i > group.getGenerators().length) {
 					tmpWE.update();
 					if (allFacesMatched(tmpWE)) {
@@ -156,12 +156,12 @@ public class DirichletDomain {
 				} 
 			}
 				tmpWE.update();
-				for (Face f: tmpWE.getFaceList())	{
-					logger.info("word = "+((DiscreteGroupElement) f.source).getWord());
-				}
-				for (WingedEdge.Vertex v: tmpWE.getVertexList())	{
-					logger.info("point = "+Rn.toString(v.point));
-				}
+//				for (Face f: tmpWE.getFaceList())	{
+//					logger.info("word = "+((DiscreteGroupElement) f.source).getWord());
+//				}
+//				for (WingedEdge.Vertex v: tmpWE.getVertexList())	{
+//					logger.info("point = "+Rn.toString(v.point));
+//				}
 //				return dd;
 			}
 //			return null;
