@@ -92,7 +92,7 @@ public class TessellatedContentExample3D  {
 	private void doIt() {
 //		dg = Platycosm.instanceOfGroup("c3");
 		ddsp = new DirichletDomainSP(tessellatedContent);
-		dg = SpaceGroup.instanceOfGroup(SpaceGroup._4o2);
+		dg = SpaceGroup.instanceOfGroup(SpaceGroup._2m2);
 //		dg = GroupGeneratorFactory.getD8Group("2.:2");
 		DiscreteGroupSimpleConstraint constraint = new DiscreteGroupSimpleConstraint(1,-1,200);
 		constraint.setManhattan(true);
