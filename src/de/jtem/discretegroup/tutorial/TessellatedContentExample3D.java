@@ -92,7 +92,7 @@ public class TessellatedContentExample3D  {
 	private void doIt() {
 //		dg = Platycosm.instanceOfGroup("c3");
 		ddsp = new DirichletDomainSP(tessellatedContent);
-		dg = SpaceGroup.instanceOfGroup(SpaceGroup._4o2);
+		dg = SpaceGroup.instanceOfGroup(SpaceGroup._8o2);
 //		dg = GroupGeneratorFactory.getD8Group("2.:2");
 		DiscreteGroupSimpleConstraint constraint = new DiscreteGroupSimpleConstraint(1,-1,200);
 		constraint.setManhattan(true);
@@ -127,11 +127,8 @@ public class TessellatedContentExample3D  {
 		JRViewer jrv = new JRViewer();
 		jrv.addBasicUI();
 		tessellatedContent.setupJRViewer(jrv);
-		AnimationPlugin animplugin = new AnimationPlugin();
-		animplugin.getAnimationPanel().getRecordPrefs().setCurrentDirectoryPath("/Users/gunn/Pictures/bottleLabels/");
-		animplugin.getAnimationPanel().setResourceDir("src/de/jtem/discretegroup/tutorial/");
-		jrv.registerPlugin(animplugin);
-		jrv.registerPlugin(new TermesSpherePlugin(false));
+		
+		// jrv.registerPlugin(new TermesSpherePlugin(false));
 		jrv.registerPlugin(ddsp);
 		jrv.registerPlugin(tessellatedContent);
 		jrv.startup();

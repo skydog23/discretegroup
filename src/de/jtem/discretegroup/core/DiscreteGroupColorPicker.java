@@ -136,6 +136,8 @@ public abstract class DiscreteGroupColorPicker {
 			}
 			FactoredMatrix fm = new FactoredMatrix(m);
 			double angle = fm.getRotationAngle()* cycleSize/(2 * Math.PI);
+			System.err.println("angle = "+angle);
+			System.err.println("rot Q = "+fm.getRotationQuaternion());
 			if (angle < 0) angle += 2 * Math.PI;
 			int ian = (int) Math.floor(angle+.01);
 			return ian;

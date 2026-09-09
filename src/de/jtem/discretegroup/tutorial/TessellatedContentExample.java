@@ -47,6 +47,7 @@ import de.jreality.plugin.menu.BackgroundColor;
 import de.jreality.scene.Appearance;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.shader.CommonAttributes;
+import de.jreality.tools.DraggingTool;
 import de.jtem.discretegroup.core.DiscreteGroup;
 import de.jtem.discretegroup.core.DiscreteGroupColorPicker;
 import de.jtem.discretegroup.core.DiscreteGroupSimpleConstraint;
@@ -65,7 +66,7 @@ public class TessellatedContentExample  {
 		fundDomSGC.setGeometry(Primitives.regularPolygon(4,.5));
 		SceneGraphComponent wrapper = new SceneGraphComponent("wrapper");
 		wrapper.addChild(fundDomSGC);
-		wrapper.addTool(new TranslateTool());
+		wrapper.addTool(new DraggingTool());
 		MatrixBuilder.euclidean().translate(.5,.3,0).scale(.3).assignTo(fundDomSGC);
 		return wrapper;
 	}
